@@ -1,4 +1,5 @@
 <?php
+<meta charset="UTF-8">
 include "config.php";
 
 if(isset($_POST['register'])){
