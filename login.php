@@ -2,7 +2,7 @@
 <meta charset="UTF-8">
 session_start();
 include "config.php";
-
+//
 if(isset($_POST['login'])){
     $email = $_POST['email'];
     $password = md5($_POST['password']);
