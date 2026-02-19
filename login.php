@@ -1,5 +1,5 @@
 <?php
-<meta charset="UTF-8">
+// <meta charset="UTF-8">
 session_start();
 include "config.php";
 //

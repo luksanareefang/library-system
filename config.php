@@ -1,9 +1,9 @@
 <?php
 $conn = mysqli_connect(
-    "sql312.infinityfree.com",
-    "if0_12345678",
-    "yourpassword",
-    "if0_12345678_library_db"
+    "localhost",
+    "s673190105",
+    "s673190105",
+    "s673190105"
 );
 
 mysqli_set_charset($conn, "utf8");
