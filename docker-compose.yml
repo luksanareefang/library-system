@@ -1,0 +1,32 @@
+services:
+  # 1. ส่วนของเว็บไซต์ (Web Server + PHP 8.2)
+  web:
+    build: .
+    ports:
+      - "8098:80"  # เข้าใช้งานเว็บไซต์ผ่าน http://localhost:8098
+    volumes:
+      - ./html:/var/www/html # ดึงโค้ดจากโฟลเดอร์ html มาแสดงผล
+    depends_on:
+      - db
+
+  # 2. ส่วนของฐานข้อมูล (Database)
+  db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: s673190105  # ชื่อฐานข้อมูล (ตั้งให้ตรงกับในไฟล์ connect.php)
+    volumes:
+      - ./mysql_data:/var/lib/mysql # เก็บข้อมูลไม่ให้หายเวลาปิด Docker
+      - ./db_import:/docker-entrypoint-initdb.d # นำเข้าไฟล์ .sql อัตโนมัติ
+
+  # 3. ส่วนจัดการฐานข้อมูล (phpMyAdmin)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8082:80"  # เข้าจัดการฐานข้อมูลผ่าน http://localhost:8082
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
