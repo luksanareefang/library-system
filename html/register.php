@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include "config.php";
 session_start();
 
@@ -22,7 +27,7 @@ if(isset($_POST['register'])){
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // 3. บันทึกข้อมูล (ใช้ Prepared Statement)
-        $insert_stmt = mysqli_prepare($conn, "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'user')");
+        $insert_stmt = mysqli_prepare($conn, "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 0)");
         mysqli_stmt_bind_param($insert_stmt, "sss", $name, $email, $hashed_password);
 
         if(mysqli_stmt_execute($insert_stmt)){
