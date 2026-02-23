@@ -1,12 +1,18 @@
 <?php
-include "config.php";
+// เปิดโชว์ Error (เอาไว้หาบั๊กชั่วคราว ถ้าเว็บใช้งานได้ปกติแล้วค่อยมาลบ 3 บรรทัดนี้ออกครับ)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// ใช้ require แทน include ระบบจะได้แจ้ง Error ชัดเจนถ้าหาไฟล์ config.php ไม่เจอ
+require "config.php"; 
 session_start();
 
 if(isset($_POST['login'])){
     $email = trim($_POST['email']);
     $password = $_POST['password']; 
 
-    // 1. ค้นหาผู้ใช้จาก "อีเมล" อย่างเดียว (ไม่ต้องหา password ใน SQL)
+    // 1. ค้นหาผู้ใช้จาก "อีเมล" อย่างเดียว
     $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE email=?");
     mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
@@ -17,7 +23,7 @@ if(isset($_POST['login'])){
     // 2. เช็คว่าเจออีเมลนี้ในระบบไหม
     if($row = mysqli_fetch_assoc($result)){
         
-        // 3. สำคัญ! เอารหัสผ่านที่ผู้ใช้พิมพ์ มาเทียบกับรหัสที่เข้ารหัสไว้ในฐานข้อมูล ($row['password'])
+        // 3. สำคัญ! เอารหัสผ่านที่ผู้ใช้พิมพ์ มาเทียบกับรหัสที่เข้ารหัสไว้ในฐานข้อมูล
         if(password_verify($password, $row['password'])){
             
             // ถ้ารหัสตรงกัน ให้เก็บค่าลง Session และเข้าสู่ระบบ
@@ -43,7 +49,6 @@ if(isset($_POST['login'])){
     <title>เข้าสู่ระบบ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -95,4 +100,3 @@ if(isset($_POST['login'])){
 
 </body>
 </html>
-
